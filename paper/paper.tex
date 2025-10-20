@@ -1,0 +1,59 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{braket}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks, linkcolor=OliveGreen, citecolor=purple,urlcolor=purple, bookmarks=true,backref=page]{hyperref}
+\usepackage[capitalise, nameinlink]{cleveref}
+\usepackage{physics}
+% redefine formatting of backwards references
+\renewcommand{\backref}[1]{}
+\renewcommand{\backreftwosep}{, }
+\renewcommand{\backreflastsep}{, }
+\renewcommand{\backrefalt}[4]{%
+\ifcase #1 %
+%
+\or
+[p.\ #2]%
+\else
+[pp.\ #2]%
+\fi}
+
+\input{new_commands.tex}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Project Proposal on Quantum Monte Carlo}
+
+\author{Hannah Baek, Tobias Tian \\
+University of British Columbia}
+
+\date{\vspace{-2.5ex} December 8th, 2025}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+This is a short description of the paper.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+(to be updated)
+example citation: \cite{shor_97}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{...}
+(to be updated)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgments}
+
+If you have discussions with your classmates about your chosen topic, you can thank them here.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{references}
+\bibliographystyle{alphaurl}
+\end{document}
