@@ -1,0 +1,79 @@
+\subsection{Main Process of VMC}
+To begin with, consider the following relevant physical definitions.
+\begin{definition}
+    Consider a general quantum system, denoted mathematically as a Hilbert space $\hilbert$, with $N$ particles. Each particle $i$ has $3$-dimensional position vector $\mathbf{r}_i$. Define a $3N$-dimensional vector $\mathbf{R} = (\mathbf{r}_1, \dots, \mathbf{r}_N)$. A general quantum state $\ketPsi$ in this system can be denoted as:
+    \begin{equation}
+        \ketPsi = \int \Psi(\mathbf{R}) \ket{\mathbf{R}} \dd \mathbf{R}
+    \end{equation}
+    where $\Psi(\mathbf{R})$ is the position-space wavefunction, which satisfies the following properties:
+    \begin{enumerate}
+        \item $\abs{\Psi(\mathbf{R})}^2 \ge 0$
+        \item $\int \conj{\Psi}(\mathbf{R})\Psi(\mathbf{R}) \dd \mathbf{R} = 1$
+    \end{enumerate}
+\end{definition}
+\begin{definition}\label{obs}
+    An \textbf{observable} $\mathcal{O}$ is a Hermitian operator, where measuring $\mathcal{O}$ mathematically amounts to doing a projective measurement with respect to the orthonormal basis of eigenvectors of $\mathcal{O}$.
+\end{definition}
+\begin{definition}
+    Given an observable $\mathcal{O}$ and a quantum state $\ketPsi$, the \textbf{expected value} of this observable with respect to this state is
+    \begin{equation}\label{eq:obs_exp}
+        \expval{\mathcal{O}} = \expval{\mathcal{O}}{\Psi}
+    \end{equation}
+    and the \textbf{variance} of the above observable and the above state is:
+    \begin{equation}
+        (\Delta \mathcal{O})^2 = \expval{\mathcal{O}^2} - (\expval{\mathcal{O}})^2
+    \end{equation}
+\end{definition}
+To characterize the time evolution of the quantum state, the observable $\hamiltonian$ is introduced to give the following.
+\begin{definition}\label{time-dep-defn}
+    The \textbf{time-dependent Schr\"odinger's equation} of a given quantum state $\ketPsi$ that is dependent on time $t$ is
+    \begin{equation}\label{eq:time-dep}
+        \imag \planck \pdv{t} \ket{\Psi(t)} = \hamiltonian \ket{\Psi(t)}
+    \end{equation}
+    where $\imag$ is the imaginary unit, $\planck$ is Planck's constant, $\hamiltonian$ is the Hamiltonian operator for the quantum state $\ketPsi$.
+\end{definition}
+In the context of VMC, the quantity of interest is the ground state energy. After the system reaches this equilibrium, the Hamiltonian can be considered to be time-independent. Thus, from \ref{time-dep-defn}
+\begin{definition}
+    If the Hamiltonian $\hamiltonian$ is time-independent, it induces the \textbf{time-independent Schr\"odinger's equation} for $\ketPsi$ to be:
+    \begin{equation}\label{eq:time-ind}
+        \hamiltonian \ketPsi = E \ketPsi
+    \end{equation}
+\end{definition}
+From \cref{eq:obs_exp} and \cref{eq:time-ind}, it follows that
+\begin{equation}\label{eq:exp_ham}
+    \expval{\hamiltonian} = E
+\end{equation}
+which indicates that, for an eigenstate $\ketPsi$ of the Hamiltonian $\hamiltonian$, the expected value of $\hamiltonian$ is the eigenvalue of $\ketPsi$, which physically represents the energy of the system when it is in the state of $\ketPsi$. \\
+If the ground state wavefunction is denoted to be $\Psi_0(\mathbf{R})$, it follows from \cref{eq:exp_ham}, the ground state energy $E_0$ is:
+\begin{align*}
+    E_0 &= \expval{\hamiltonian}{\Psi_0} \\
+    &= \int \conj{\Psi_0}(\mathbf{R})\hamiltonian\Psi_0(\mathbf{R}) \dd \mathbf{R}
+\end{align*}
+To approximate this energy, a trial wavefunction $\Psi_T$ is first selected, satisfying certain conditions \cite{foulkes_mitas_needs_rajagopal_01}:
+\begin{enumerate}
+    \item $\Psi_T$ and $\grad{\Psi_T}$ must be continuous wherever the potential is finite.
+    \item The integrals $\int \conj{\Psi_T}\Psi_T$, $\int \conj{\Psi_T}\hamiltonian\Psi_T$, and $\int \conj{\Psi_T}\hamiltonian^2\Psi_T$ all must exist
+\end{enumerate}
+With this trial wavefunction, the expected value of the Hamiltonian is calculated to be \cite{foulkes_mitas_needs_rajagopal_01} \cite{acioli_97} \cite{kalos_whitlock_08}:
+\begin{equation}\label{eq:trial_energy}
+    E_V = \frac{\int \conj{\Psi_T}(\mathbf{R}) \hamiltonian \Psi_T(\mathbf{R}) \dd \mathbf{R}}{\int \abs{\Psi_T(\mathbf{R})}^2 \dd \mathbf{R}} \ge E_0
+\end{equation}
+To use VMC, sampling needs to be conducted according to a certain probability distribution. The trial energy $E_V$ can be considered as an expected value of all local energies $E_{\text{loc}}$. From \cref{eq:time-ind}, energy of the system in state $\ketPsi$ can also be calculated as:
+$$E = \frac{\hamiltonian \ketPsi}{\ketPsi}$$
+Therefore, each local energy sampled from $\mathbf{R}$ is evaluated to be \cite{kalos_whitlock_08}:
+\begin{equation}\label{eq:local}
+    E_{\text{loc}}(\mathbf{R}) = \frac{\hamiltonian \Psi_T(\mathbf{R})}{\Psi_T(\mathbf{R})}
+\end{equation}
+This gives the probability density for sampling to naturally be \cite{kalos_whitlock_08}:
+\begin{equation}\label{eq:pdf}
+    f(\mathbf{R}) = \frac{\abs{\Psi_T(\mathbf{R})}^2}{\int \abs{\Psi_T(\mathbf{R})}^2 \dd \mathbf{R}}
+\end{equation}
+From \cref{eq:local} and \cref{eq:pdf}, \cref{eq:trial_energy} becomes:
+\begin{equation}
+    E_V = \int f(\mathbf{R}) E_{\text{loc}}(\mathbf{R}) \dd \mathbf{R}
+\end{equation}
+which can be approximated by \cite{foulkes_mitas_needs_rajagopal_01}\cite{acioli_97}:
+\begin{equation}
+    E_V \approx \frac{1}{M} \Sum{m = 1}{M} E_{\text{loc}}(\mathbf{R}_m)
+\end{equation}
+The essential steps of VMC have been established, showing how the ground-state energy can be estimated through Monte Carlo sampling. However, in this process, two key challenges remain: the choice and optimization of the trial wavefunction and the sampling of the configuration $\mathbf{R}$. These two aspects will be discussed in the following sections.

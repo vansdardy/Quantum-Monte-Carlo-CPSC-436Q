@@ -1,0 +1,17 @@
+Monte Carlo method is a class of classical computational algorithm which aims to find a numerical value of interest through iterative random sampling according to a probability distribution. Such method is often applied when analytical solutions are too complex to solve. A simple case in which Monte Carlo method can be used is to approximate the value of $\pi$ with only the knowledge of how to calculate the area of a circle. The process is outlined as such \cite{kalos_whitlock_08}:
+\begin{quote}
+    1. Consider a square with edge length of $2$, and centered at $(0, 0)$. \\
+    2. Then, draw the inscribed circle of such a square which has radius $1$, also centered at $(0, 0)$. \\
+    3. \textbf{Uniformly at random} select a point within the square. \\
+    4. Calculate the ratio of the number of points within the circle and the total number of points sampled. This should approximate $\frac{\pi}{4}$. \\
+    5. Repeat Step 3 and 4 until a certain threshold. Calculate the approximated value of $\pi$ by multiplying the ratio stated in Step 4 by $4$.
+\end{quote}
+By applying this process, we can obtain the following result:
+\begin{center}
+    \includegraphics[scale=0.4]{img/pi-100.png}
+    \includegraphics[scale=0.4]{img/pi-1000.png}
+    \includegraphics[scale=0.4]{img/pi-10000.png}
+\end{center}
+The key idea from this demonstration is that random sampling can be used to evaluate a definite integral \cite{kalos_whitlock_08}:
+$$I = \Int{0}{1}\Int{0}{\sqrt{1 - x^2}}\dd y \dd x$$
+From the above demonstration, it is observed that the main goal of Monte Carlo method is to solve a certain mathematical problem with the core process to be iterated random sampling, where each additional iteration gives more accurate results.

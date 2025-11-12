@@ -8,6 +8,7 @@
 \usepackage[colorlinks, linkcolor=OliveGreen, citecolor=purple,urlcolor=purple, bookmarks=true,backref=page]{hyperref}
 \usepackage[capitalise, nameinlink]{cleveref}
 \usepackage{physics}
+\usepackage{graphicx}
 % redefine formatting of backwards references
 \renewcommand{\backref}[1]{}
 \renewcommand{\backreftwosep}{, }
@@ -22,11 +23,12 @@
 \fi}
 
 \input{new_commands.tex}
+\input{math_env.tex}
 
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Project Proposal on Quantum Monte Carlo}
+\title{Quantum Monte Carlo}
 
 \author{Hannah Baek, Tobias Tian \\
 University of British Columbia}
@@ -36,22 +38,32 @@ University of British Columbia}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This is a short description of the paper.
+\input{abstract.tex}
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-(to be updated)
-example citation: \cite{shor_97}
+\input{1_intro.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{...}
-(to be updated)
+\section{Monte Carlo Method}
+\input{2_monte_carlo.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Variational Monte Carlo}
+\input{3_variational.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Diffusion Monte Carlo}
+\input{4_diffusion.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Path Integral Monte Carlo}
+\input{5_path_integral.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgments}
-
-If you have discussions with your classmates about your chosen topic, you can thank them here.
+\input{acknowledgement.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliography{references}

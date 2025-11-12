@@ -1,10 +1,82 @@
-@article{shor_97,
-	abstract = { A digital computer is generally believed to be an efficient universal computing device; that is, it is believed able to simulate any physical computing device with an increase in computation time by at most a polynomial factor. This may not be true when quantum mechanics is taken into consideration. This paper considers factoring integers and finding discrete logarithms, two problems which are generally thought to be hard on a classical computer and which have been used as the basis of several proposed cryptosystems. Efficient randomized algorithms are given for these two problems on a hypothetical quantum computer. These algorithms take a number of steps polynomial in the input size, e.g., the number of digits of the integer to be factored. },
-	author = {Shor, Peter W.},
-	doi = {10.1137/S0097539795293172},
-	journal = {SIAM Journal on Computing},
-	number = {5},
-	pages = {1484-1509},
-	title = {Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer},
-	volume = {26},
-	year = {1997}}
+@article{troyer_wiese_05,
+	abstract = {Quantum Monte Carlo simulations, while being efficient for bosons, suffer from the ``negative sign problem'' when applied to fermions—causing an exponential increase of the computing time with the number of particles. A polynomial time solution to the sign problem is highly desired since it would provide an unbiased and numerically exact method to simulate correlated quantum systems. Here we show that such a solution is almost certainly unattainable by proving that the sign problem is nondeterministic polynomial (NP) hard, implying that a generic solution of the sign problem would also solve all problems in the complexity class NP in polynomial time.},
+	author = {Troyer, Matthias and Wiese, Uwe-Jens},
+	doi = {10.1103/PhysRevLett.94.170201},
+	journal = {Physical Review Letters},
+	number = {17},
+	pages = {170201},
+	title = {Computational Complexity and Fundamental Limitations to Fermionic Quantum Monte Carlo Simulations},
+	volume = {94},
+	year = {2005}
+}
+
+@article{foulkes_mitas_needs_rajagopal_01,
+	abstract = {This article describes the variational and fixed-node diffusion quantum Monte Carlo methods and how they may be used to calculate the properties of many-electron systems. These stochastic wave-function-based approaches provide a very direct treatment of quantum many-body effects and serve as benchmarks against which other techniques may be compared. They complement the less demanding density-functional approach by providing more accurate results and a deeper understanding of the physics of electronic correlation in real materials. The algorithms are intrinsically parallel, and currently available high-performance computers allow applications to systems containing a thousand or more electrons. With these tools one can study complicated problems such as the properties of surfaces and defects, while including electron correlation effects with high precision. The authors provide a pedagogical overview of the techniques and describe a selection of applications to ground and excited states of solids and clusters.},
+	author = {Foulkes, W. M. C. and Mitas, L. and Needs, R.J. and Rajagopal, G.},
+	doi = {10.1103/RevModPhys.73.33},
+	journal = {Reviews of Modern Physics},
+	number = {1},
+	pages = {33-83},
+	title = {Quantum Monte Carlo simulations of solids},
+	volume = {73},
+	year = {2001}
+}
+
+@misc{ceperly_10,
+	abstract = {In this brief article, I introduce the various types of quantum Monte Carlo (QMC) methods, in particular, those that are applicable to systems in extreme regimes of temperature and pressure. We give references to longer articles where detailed discussion of applications and algorithms appear.},
+	author = {Ceperly, David M.},
+	howpublished = {Chapter of Theoretical and Computational Methods in Mineral Physics: Geophysical Applications},
+	title = {An Overview of Quantum Monte Carlo Methods},
+	year = {2010},
+	url = {https://people.physics.illinois.edu/Ceperley/papers/213.pdf}
+}
+
+@misc{troyer_11,
+	author = {Troyer, Matthias},
+	howpublished = {Lecture notes, at ETH Z\"urich},
+	title = {Computational Quantum Physics},
+	year = {2011},
+	url = {https://edu.itp.phys.ethz.ch/fs11/cqp/cqp.pdf}
+}
+
+@article{wagner_bajdich_mitas_09,
+	abstract = {We describe QWalk, a new computational package capable of performing quantum Monte Carlo electronic structure calculations for molecules and solids with many electrons. We describe the structure of the program and its implementation of quantum Monte Carlo methods. It is open-source, licensed under the GPL, and available at the web site http://www.qwalk.org.},
+	author = {Wagner, Lucas K. and Bajdich, Michal and Mitas, Lubos},
+	doi = {10.1016/j.jcp.2009.01.017},
+	journal = {Journal of Computational Physics},
+	number = {9},
+	pages = {3390-3404},
+	title = {QWalk: A quantum Monte Carlo program for electronic structure},
+	volume = {228},
+	year = {2009}
+}
+
+@article{acioli_97,
+	abstract = {Correlation energy makes a small but very important contribution to the total energy of an electronic system. Among the traditional methods used to study electronic correlation are coupled clusters (CC), configuration interaction (CI) and manybody perturbation theory (MBPT) in quantum chemistry, and density functional theory (DFT) in solid state physics. An alternative method, which has been applied successfully to systems ranging from the homogeneous electron gas, to atoms, molecules, solids and clusters is quantum Monte Carlo (QMC). In this method the Schrödinger equation is transformed to a diffusion equation which is solved using stochastic methods. In this work we review some of the basic aspects of QMC in two of its variants, variational (VMC) and diffusion Monte Carlo (DMC). We also review some of its applications, such as the homogeneous electron gas, atoms and the inhomogeneous electron gas (jellium surface). The correlation energy obtained by Ceperley and Alder (D.M. Ceperley and B.J. Alder, Physical Review, 45 (1980) 566), as parameterized by Perdew and Zunger (J.P. Perdew and A. Zunger, Phys. Rev. B23 (1980) 5469), is one of the most used in DFT calculations in the local density approximation (LDA). Unfortunately, the use of the LDA in inhomogeneous systems is questionable, and better approximations are desired or even necessary. We present results of the calculations performed on metallic surfaces in the jellium model which can be useful to obtain better approximations for the exchange and correlation functionals. We have computed the electronic density, work function, surface energy and pair correlation functions for a jellium slab at the average density of magnesium (rs = 2.66). Since there is an exact expression for the exchange and correlation functional in terms of the pair correlation functions, the knowledge of such functions near the edge of the surface may be useful to obtain exchange and correlation functionals valid for inhomogeneous systems. From the exchange and correlation functional we can conclude that the exchange-correlation hole is nearly spherical in the bulk region but elongated in the direction perpendicular to the surface as the electron approaches the edge of the surface, showing the anisotropic character of the electronic correlation near the surface.},
+	author = {Acioli, Paulo H.},
+	doi = {10.1016/S0166-1280(96)04821-X},
+	journal = {Journal of Molecular Structure: THEOCHEM},
+	number = {2},
+	pages = {75-85},
+	title = {Review of quantum Monte Carlo methods and their applications},
+	volume = {394},
+	year = {1997}
+}
+
+@article{ceperly_95,
+	abstract = {One of Feynman's early applications of path integrals was to superfluid He4. He showed that the thermodynamic properties of Bose systems are exactly equivalent to those of a peculiar type of interacting classical "ring polymer." Using this mapping, one can generalize Monte Carlo simulation techniques commonly used for classical systems to simulate boson systems. In this review, the author introduces this picture of a boson superfluid and shows how superfluidity and Bose condensation manifest themselves. He shows the excellent agreement between simulations and experimental measurements on liquid and solid helium for such quantities as pair correlations, the superfluid density, the energy, and the momentum distribution. Major aspects of computational techniques developed for a boson superfluid are discussed: the construction of more accurate approximate density matrices to reduce the number of points on the path integral, sampling techniques to move through the space of exchanges and paths quickly, and the construction of estimators for various properties such as the energy, the momentum distribution, the superfluid density, and the exchange frequency in a quantum crystal. Finally the path-integral Monte Carlo method is compared to other quantum Monte Carlo methods.},
+	author = {Ceperley, David M.},
+	doi = {10.1103/RevModPhys.67.279},
+	journal = {Review of Modern Physics},
+	number = {2},
+	title = {Path-integrals in the theory of condensed helium},
+	volume = {67},
+	year = {1995}
+}
+
+@book{kalos_whitlock_08,
+  author = {Kalos, Malvin H. and Whitlock, Paula A.},
+  publisher = {Wiley},
+  title = {Monte Carlo Methods},
+  year = {2008}
+}
