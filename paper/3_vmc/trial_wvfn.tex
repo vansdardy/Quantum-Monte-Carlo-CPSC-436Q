@@ -8,7 +8,7 @@ The purpose of $\Psi_T$ is to provide the best possible approximation to the tru
 while remaining mathematically well-behaved and computationally tractable.
 
 %---------------------------------------------------------
-\subsubsection*{Motivation: Why Good Trial Wavefunctions Matter}
+\subsubsection{Motivation: Why Good Trial Wavefunctions Matter}
 
 Although VMC is a powerful many-body method, its accuracy depends heavily on the quality of 
 $\Psi_T$. Most ground-state calculations in electronic structure theory instead use 
@@ -17,13 +17,13 @@ less expensive methods such as Hartree--Fock (HF) or Kohn--Sham density function
 well-known failures: HF neglects correlation entirely (beyond exchange), while common DFT 
 functionals struggle with strongly interacting systems, transition-metal atoms, 
 van der Waals interactions, and dissociation regions. These limitations are further discussed in 
-Ref.~\cite{FMNR01}, Sec.~II~C.
+Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~II~C.
 As a result, their predictive power is often limited.
 
 Quantum Monte Carlo techniques successfully overcome many of these failures.  
 Continuum QMC calculations can already achieve ``chemical accuracy''  
 ($\sim 1$ kcal/mol $\approx 0.004$ eV per molecule)  
-for small systems and show no fundamental loss of accuracy for larger systems (Ref.~\cite{FMNR01}, Sec.~I).  
+for small systems and show no fundamental loss of accuracy for larger systems (Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~I).  
 The computational cost of fermionic VMC and DMC scales approximately as $N^3$ with the number of 
 electrons $N$, making simulations of moderately large systems feasible.  
 Furthermore, QMC algorithms are naturally parallelizable, enabling efficient use of modern 
@@ -31,31 +31,31 @@ high-performance computing resources.
 
 
 %---------------------------------------------------------
-\subsubsection*{Mathematical Requirements on the Trial Wavefunction}
+% \subsubsection*{Mathematical Requirements on the Trial Wavefunction}
 
-To ensure that the variational energy and local energy are finite, the following conditions 
-must be satisfied whenever the potential is finite:
-\begin{enumerate}
-    \item $\Psi_T$ and its gradient $\nabla \Psi_T$ must be continuous.
-    \item The integrals $\int \Psi_T^\* \Psi_T\, dR$, 
-         $\int \Psi_T^\* H \Psi_T\, dR$, and 
-         $\int \Psi_T^\* H^2 \Psi_T\, dR$  
-         must exist.
-\end{enumerate}
+% To ensure that the variational energy and local energy are finite, the following conditions 
+% must be satisfied whenever the potential is finite:
+% \begin{enumerate}
+%     \item $\Psi_T$ and its gradient $\nabla \Psi_T$ must be continuous.
+%     \item The integrals $\int \Psi_T^\* \Psi_T\, dR$, 
+%          $\int \Psi_T^\* H \Psi_T\, dR$, and 
+%          $\int \Psi_T^\* H^2 \Psi_T\, dR$  
+%          must exist.
+% \end{enumerate}
 
-These conditions also guarantee a finite variance of the energy.  
-The ``zero-variance property'' of QMC states that if $\Psi_T$ equals an exact eigenstate,  
-then the local energy becomes constant and the variance goes to zero,  
-dramatically improving Monte Carlo efficiency. These limitations are further discussed in Ref.~\cite{FMNR01}, Sec.~III~C.
-
-
-
-%---------------------------------------------------------
+% These conditions also guarantee a finite variance of the energy.  
+% The ``zero-variance property'' of QMC states that if $\Psi_T$ equals an exact eigenstate,  
+% then the local energy becomes constant and the variance goes to zero,  
+% dramatically improving Monte Carlo efficiency. These limitations are further discussed in Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~III~C.
 
 
 
 %---------------------------------------------------------
-\subsubsection*{Structure of a Useful Trial Wavefunction}
+
+
+
+%---------------------------------------------------------
+\subsubsection{Structure of a Useful Trial Wavefunction}
 
 A common and highly effective ansatz for electronic systems is the 
 \emph{Slater--Jastrow} form:
@@ -99,7 +99,7 @@ A high-quality Slater determinant should satisfy the following properties:
 \end{itemize}
 
 These properties and the role of the Slater determinant as the antisymmetric
-component of the trial wavefunction are discussed in Ref.~\cite{FMNR01},
+component of the trial wavefunction are discussed in Ref.~\cite{foulkes_mitas_needs_rajagopal_01},
 Secs.~II~C and IV~B.
 
 
@@ -126,7 +126,7 @@ structure (Slater) and realistic correlation behavior (Jastrow).
 
 
 %---------------------------------------------------------
-\subsubsection*{Choosing a Good Trial Wavefunction}
+\subsubsection{Choosing a Good Trial Wavefunction}
 
 Before optimizing the parameters within $\Psi_T$, one must first decide on a suitable
 functional form for the trial wavefunction itself.  
@@ -143,7 +143,7 @@ antisymmetric foundation for VMC because:
     \item and HF already captures the dominant exchange physics arising from antisymmetry.
 \end{itemize}
 
-As discussed in Sec.~VII of \cite{FMNR01}, these properties make HF orbitals reliable
+As discussed in Sec.~VII of \cite{foulkes_mitas_needs_rajagopal_01}, these properties make HF orbitals reliable
 building blocks for constructing the Slater determinant in VMC.  
 In practice, one first performs an HF (or DFT--LDA) calculation for the system of interest
 and extracts the resulting orbitals $\{\phi_i(r)\}$.  
@@ -181,7 +181,7 @@ structure inherited from the HF determinant.
 
 
 %---------------------------------------------------------
-\subsubsection*{Optimization of Variational Parameters}
+\subsubsection{Optimization of Variational Parameters}
 
 The trial wavefunction contains adjustable parameters $\alpha$, typically in the Jastrow factor 
 and occasionally in the orbitals.  
