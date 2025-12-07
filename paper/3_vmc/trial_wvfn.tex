@@ -1,207 +1,132 @@
 \subsection{Selection and Optimization of the Trial Wavefunction}
-% In this section, we focus on zero-temperature VMC applied to electronic systems, where the 
-% wavefunction describes $N$ interacting electrons.  
-% Choosing an accurate trial wavefunction $\Psi_T$ is crucial: it determines not only the 
-% variational energy $E_V$ but also the statistical efficiency of the Monte Carlo sampling.  
-% The purpose of $\Psi_T$ is to provide the best possible approximation to the true ground state 
-% while remaining mathematically well-behaved and computationally tractable.
 
-% %---------------------------------------------------------
-% \subsubsection{Motivation: Why Good Trial Wavefunctions Matter}
+In this section, we focus on zero-temperature VMC applied to electronic systems, where the 
+wavefunction describes $N$ interacting electrons.  
+Choosing an accurate trial wavefunction $\Psi_T$ is crucial: it determines not only the 
+variational energy $E_V$ but also the statistical efficiency of the Monte Carlo sampling.  
+The purpose of $\Psi_T$ is to provide the best possible approximation to the true ground state 
+while remaining mathematically well-behaved and computationally tractable.
 
-% Although VMC is a powerful many-body method, its accuracy depends heavily on the quality of 
-% $\Psi_T$. Most ground-state calculations in electronic structure theory instead use 
-% less expensive methods such as Hartree--Fock (HF) or Kohn--Sham density functional theory 
-% (DFT). These methods scale favorably and are efficient to solve, but they have 
-% well-known failures: HF neglects correlation entirely (beyond exchange), while common DFT 
-% functionals struggle with strongly interacting systems, transition-metal atoms, 
-% van der Waals interactions, and dissociation regions. These limitations are further discussed in 
-% Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~II~C.
-% As a result, their predictive power is often limited.
+%---------------------------------------------------------
+\subsubsection*{Motivation: Why Good Trial Wavefunctions Matter}
 
-% Quantum Monte Carlo techniques successfully overcome many of these failures.  
-% Continuum QMC calculations can already achieve ``chemical accuracy''  
-% ($\sim 1$ kcal/mol $\approx 0.004$ eV per molecule)  
-% for small systems and show no fundamental loss of accuracy for larger systems (Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~I).  
-% The computational cost of fermionic VMC and DMC scales approximately as $N^3$ with the number of 
-% electrons $N$, making simulations of moderately large systems feasible.  
-% Furthermore, QMC algorithms are naturally parallelizable, enabling efficient use of modern 
-% high-performance computing resources.
+Although VMC is a powerful many-body method, its accuracy depends heavily on the quality of 
+$\Psi_T$. Most ground-state calculations in electronic structure theory instead use 
+less expensive methods such as Hartree--Fock (HF) or Kohn--Sham density functional theory 
+(DFT). These methods scale favorably and are efficient to solve, but they have 
+well-known failures, HF neglects correlation entirely, resulting in limited predictive power. These limitations are further discussed in 
+Ref.~\cite{FMNR01}, Sec.~II~C.
 
 
-% %---------------------------------------------------------
-% % \subsubsection*{Mathematical Requirements on the Trial Wavefunction}
-
-% % To ensure that the variational energy and local energy are finite, the following conditions 
-% % must be satisfied whenever the potential is finite:
-% % \begin{enumerate}
-% %     \item $\Psi_T$ and its gradient $\nabla \Psi_T$ must be continuous.
-% %     \item The integrals $\int \Psi_T^\* \Psi_T\, dR$, 
-% %          $\int \Psi_T^\* H \Psi_T\, dR$, and 
-% %          $\int \Psi_T^\* H^2 \Psi_T\, dR$  
-% %          must exist.
-% % \end{enumerate}
-
-% % These conditions also guarantee a finite variance of the energy.  
-% % The ``zero-variance property'' of QMC states that if $\Psi_T$ equals an exact eigenstate,  
-% % then the local energy becomes constant and the variance goes to zero,  
-% % dramatically improving Monte Carlo efficiency. These limitations are further discussed in Ref.~\cite{foulkes_mitas_needs_rajagopal_01}, Sec.~III~C.
+Quantum Monte Carlo techniques successfully overcome many of these failures.  
+Continuum QMC calculations can already achieve ``chemical accuracy''  
+($\sim 1$ kcal/mol $\approx 0.004$ eV per molecule)  
+for small systems and show no fundamental loss of accuracy for larger systems (Ref.~\cite{FMNR01}, Sec.~I).  
+The computational cost of fermionic VMC and DMC scales approximately as $N^3$ with the number of 
+electrons $N$, making simulations of moderately large systems feasible.  
+Furthermore, QMC algorithms are naturally parallelizable, enabling efficient use of modern 
+high-performance computing resources.
 
 
 
-% %---------------------------------------------------------
+
+
+%---------------------------------------------------------
+\subsubsection*{Structure of a Useful Trial Wavefunction}
+
+A common and highly effective ansatz for electronic systems is the 
+\emph{Slater--Jastrow} form:
+\[
+\Psi_T(R;\alpha) = \Phi(R)\, J(R;\alpha),
+\]
+where $R = (r_1, \ldots, r_N)$ denotes the electron coordinates. This is the standard starting point for VMC of electronic systems because it combines an antisymmetric Slater determinant with a Jastrow factor that captures the electron-electron correlation. 
+
+\paragraph{Slater determinant (antisymmetric part).}
+The Slater determinant
+\[
+\Phi(R) = 
+\det \big[ \phi_i(r_j) \big]
+\]
+enforces the required antisymmetry of a fermionic wavefunction. Each orbital $\phi_i$ is the wavefunction of a single electron independently moving in a self-consistent field generated by the other electrons. 
+
+A high-quality Slater determinant within VMC must be built from orbitals that 
+respect the symmetries of the Hamiltonian, remain orthonormal for numerical 
+stability, and generate reasonable nodal surfaces, since the behavior of 
+$\Psi_T$ near its nodes strongly influences the stability and accuracy of the 
+variational estimate.  It is also desirable for the determinant to remain compact so that computing 
+$\Phi(R)$ and its derivatives during the Monte Carlo sampling procedure is 
+computationally efficient. In practice, 
+Hartree--Fock orbitals naturally satisfy these conditions and therefore form a 
+reliable foundation for constructing the Slater determinant \cite{FMNR01}.
 
 
 
-% %---------------------------------------------------------
-% \subsubsection{Structure of a Useful Trial Wavefunction}
 
-% A common and highly effective ansatz for electronic systems is the 
-% \emph{Slater--Jastrow} form:
-% \[
-% \Psi_T(R;\alpha) = \Phi(R)\, J(R;\alpha),
-% \]
-% where $R = (r_1, \ldots, r_N)$ is the configuration of all electrons.  
+ \paragraph{Jastrow factor (correlation part).}
+The Jastrow factor introduces explicit electron--electron correlation through
+\[
+J(R;\alpha) = \exp\!\left[ \sum_{i<j} u(r_{ij};\alpha) \right],
+\]
+where $u(r_{ij};\alpha)$ is a function of the distance between two electrons, with a set of tuning parameters~$\alpha$ that control how strongly the electrons correlate with one another. 
 
-% \paragraph{Slater determinant (antisymmetric part).}
-% The Slater determinant
-% \[
-% \Phi(R) = 
-% \det \big[ \phi_i(r_j) \big]
-% \]
-% ensures antisymmetry under particle exchange, as required for fermions.  
-% Each orbital $\phi_i$ is a single-particle wavefunction describing where one electron 
-% ``prefers'' to be in space.
+The Jastrow term enforces the correct electron--electron cusp behaviour, accounts for
+short-range correlation holes, and captures long-range effects such as dispersion
+that Hartree--Fock fails to describe.  
 
-% A high-quality Slater determinant should satisfy the following properties:
-% \begin{itemize}
-%     \item \textbf{Correct symmetry.}  
-%     The orbitals must transform appropriately under rotations, translations, reflections, 
-%     and crystal periodicity (in solids).
-%     \item \textbf{Orthonormality.}  
-%     Using orthonormal orbitals keeps the determinant numerically stable and produces 
-%     well-behaved nodal surfaces.
-%     \item \textbf{Good nodal surfaces.}  
-%     The nodal surface is the set of configurations where $\Psi_T(R) = 0$.  
-%     Electrons can never be found at these nodes.  
-%     HF orbitals often give qualitatively correct nodal surfaces, typically better than 
-%     DFT--LDA orbitals for atoms and molecules.  
-%     Since DMC's fixed-node approximation depends entirely on the nodes of $\Psi_T$, 
-%     poor nodal structure leads directly to higher errors.
-%     \item \textbf{Physically reasonable shape.}  
-%     HF orbitals reflect chemical features such as shell structure, electron localization, 
-%     hybridization, and bonding patterns.
-%     \item \textbf{Compactness.}  
-%     HF already provides a single-determinant approximation.  
-%     Without it, one would require very large configuration-interaction (CI) expansions, 
-%     slowing down QMC convergence significantly.
-% \end{itemize}
+By including these Coulomb-driven correlation effects, the Jastrow factor
+lowers the variational energy and reduces fluctuations in the local energy while
+leaving the antisymmetry of the Slater determinant unchanged. 
 
-% These properties and the role of the Slater determinant as the antisymmetric
-% component of the trial wavefunction are discussed in Ref.~\cite{foulkes_mitas_needs_rajagopal_01},
-% Secs.~II~C and IV~B.
+The choice of $u(r_{ij};\alpha)$ depends on the physical system and on the types of particle-particle correlations that must be captured. Simple analytic forms that satisfy the electron--electron cusp condition are often sufficient for small atoms, while more flexible parametrizations are used for larger or more strongly correlated systems. 
 
 
-% \paragraph{Jastrow factor (correlation part).}
-% The Jastrow factor introduces explicit electron--electron correlations:
-% \[
-% J(R;\alpha) = \exp\!\left[ \sum_{i<j} u(r_{ij};\alpha) \right],
-% \]
-% where $u(r_{ij})$ is a correlation function depending on the inter-electron distance.  
-
-% This factor corrects several deficiencies of Hartree--Fock:
-% \begin{itemize}
-%     \item \textbf{Cusp conditions.}  
-%     The exact electronic wavefunction has cusps when two electrons approach each other.  
-%     HF lacks these entirely.
-%     \item \textbf{Correlation holes.}  
-%     The Jastrow factor accounts for electrons avoiding each other at short range.
-%     \item \textbf{Short- and long-range dynamical correlation.}  
-%     This includes van der Waals interactions, which HF cannot describe.
-% \end{itemize}
-
-% Together, the Slater and Jastrow parts produce a wavefunction with both accurate symmetry 
-% structure (Slater) and realistic correlation behavior (Jastrow).
+In our VMC simulation of helium (see Sec.~XX), we
+select a two-body Jastrow factor whose initial parameters follow directly from the cusp condition and from basic physical intuition about the typical separation between the two electrons.
 
 
-% %---------------------------------------------------------
-% \subsubsection{Choosing a Good Trial Wavefunction}
-
-% Before optimizing the parameters within $\Psi_T$, one must first decide on a suitable
-% functional form for the trial wavefunction itself.  
-% For electronic systems, the construction almost always begins with a set of
-% single-particle orbitals obtained from a mean-field calculation such as Hartree--Fock (HF)
-% or, in some cases, density functional theory (DFT).  
-% Although HF neglects dynamical electron correlation, it provides a high-quality
-% antisymmetric foundation for VMC because:
-
-% \begin{itemize}
-%     \item HF orbitals obey the correct spatial and spin symmetries of the problem,
-%     \item they are orthonormal and numerically stable,
-%     \item they produce nodal surfaces that are qualitatively correct for many atoms and molecules,
-%     \item and HF already captures the dominant exchange physics arising from antisymmetry.
-% \end{itemize}
-
-% As discussed in Sec.~VII of \cite{foulkes_mitas_needs_rajagopal_01}, these properties make HF orbitals reliable
-% building blocks for constructing the Slater determinant in VMC.  
-% In practice, one first performs an HF (or DFT--LDA) calculation for the system of interest
-% and extracts the resulting orbitals $\{\phi_i(r)\}$.  
-% These orbitals form the Slater determinant $\Phi(R)$, which enforces the fermionic symmetry
-% and defines the nodal surface that strongly influences the accuracy of both VMC and DMC.
-
-% However, the HF determinant lacks several key features of the exact ground state.
-% In particular, it does not incorporate:
-
-% \begin{itemize}
-%     \item the electron--electron cusp conditions,
-%     \item short-range correlation holes,
-%     \item long-range dynamical correlation,
-%     \item or van der Waals interactions.
-% \end{itemize}
-
-% To address these deficiencies, VMC introduces a Jastrow correlation factor
-% $J(R;\alpha)$, whose functional form is chosen to satisfy the known cusp conditions
-% and to capture both short- and long-range electron correlation.  
-% Typical Jastrow forms include one-body (electron--ion) and two-body (electron--electron)
-% terms, with additional three-body terms used in high-accuracy calculations.
-
-% The overall process for selecting a good trial wavefunction therefore consists of:
-% \begin{enumerate}
-%     \item performing an HF or DFT calculation to obtain physically meaningful orbitals,
-%     \item constructing the Slater determinant using these orbitals,
-%     \item choosing a Jastrow factor with the correct cusp behavior and flexible correlation terms,
-%     \item and verifying that the resulting Slater--Jastrow form is compact, well-behaved,
-%           and computationally efficient to evaluate.
-% \end{enumerate}
-
-% This Slater--Jastrow wavefunction serves as the starting point for subsequent parameter
-% optimization, which refines the correlation terms while preserving the symmetry and nodal
-% structure inherited from the HF determinant.
+In Sec.~YY, we describe how these parameters are optimized by minimizing the variance of the local energy. 
 
 
-% %---------------------------------------------------------
-% \subsubsection{Optimization of Variational Parameters}
 
-% The trial wavefunction contains adjustable parameters $\alpha$, typically in the Jastrow factor 
-% and occasionally in the orbitals.  
-% These parameters are optimized by minimizing either
-% \[
-% E_V(\alpha)
-% \quad \text{or} \quad
-% \mathrm{Var}[E_{\mathrm{loc}}],
-% \]
-% where $E_{\mathrm{loc}}$ is the local energy.  
 
-% \paragraph{Energy minimization.}
-% The variational principle ensures $E_V(\alpha) \ge E_0$, so minimizing $E_V$ is a direct way 
-% to improve the wavefunction.  
-% However, Monte Carlo estimates of $E_V$ can be noisy, making optimization challenging when 
-% $\Psi_T$ is far from optimal.
 
-% \paragraph{Variance minimization.}
-% Since the local energy of the exact ground state is constant,
-% variance minimization provides a stable and physically motivated strategy.  
-% It is widely used in practice, especially in the early stages of optimization.
+%---------------------------------------------------------
+\subsubsection*{Selecting the Slater--Jastrow wavefunction.}
 
-% \paragraph{TODO: METHOD OF OPTIMIZATION OF PARAMETERS}
+Constructing a good trial wavefunction therefore involves:  
+(1) performing a Hartree--Fock (or DFT) calculation to generate orbitals with the 
+appropriate symmetry and nodal structure;  
+(2) building the Slater determinant from these orbitals; and  
+(3) choosing a Jastrow factor with the correct cusp conditions and flexible correlation 
+terms.  
+The resulting Slater--Jastrow wavefunction provides a balanced and computationally 
+efficient starting point for subsequent parameter optimization within VMC.
+
+
+%---------------------------------------------------------
+\subsubsection*{Optimization of Variational Parameters}
+
+The trial wavefunction $\Psi_T(R;\alpha)$ contains adjustable parameters~$\alpha$,
+primarily in the Jastrow factor, that determine the strength and range of the
+correlation terms.  To obtain the most accurate and statistically efficient
+wavefunction, these parameters must be optimized.  In this work we focus on
+\emph{variance minimization}, which adjusts $\alpha$ so that the fluctuations of
+the local energy,
+\[
+E_{\mathrm{loc}}(R;\alpha) = \frac{H\Psi_T(R;\alpha)}{\Psi_T(R;\alpha)},
+\]
+are minimized over configurations sampled from $|\Psi_T|^2$.
+
+For the exact ground state the local energy is constant, so a lower variance
+directly indicates a trial wavefunction that is closer to the true eigenstate.
+Variance minimization is therefore a stable and widely used approach.
+
+In practice, the optimization proceeds by estimating the derivatives of the
+variance with respect to each parameter~$\alpha_k$ using configurations drawn
+from an initial Monte Carlo run.  These derivatives provide a stochastic
+gradient that indicates how the parameters should be updated to reduce the
+variance.  Repeating this process iteratively yields progressively improved
+values of~$\alpha$.  The specific update rule used in our implementation is
+described in Sec.~YY, where we apply this procedure to optimize the Jastrow
+parameters for the helium VMC calculation.
 
