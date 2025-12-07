@@ -1,1 +1,19 @@
 \subsection{Sampling Method}
+In the previous section, it is discussed how a trial wavefunction can be selected and optimized. Yet, it is still unclear how a configuration $\mathbf{R}$ is sampled such that it satisfies the probability density in \cref{eq:pdf}. \\
+Na\"ively, one should sample according to this probability density function. However, it should be noted that the integral present in the denominator of \cref{eq:pdf} becomes computationally implausible to calculate or normalize when the dimension of $\mathbf{R}$ scales, because as stated before, configuration $\mathbf{R}$ is a $3N$-dimensional vector. Furthermore, uniformly sampling in a $3N$-dimensional space suffers from the ``curse of dimensionality'' where if only a given number of data points are being sampled, the samples would be so sparse that they cannot represent the population well \cite{metropolis_rosenbluth_rosenbluth_teller_teller_53}. Furthermore, depending on the form of the selected trial wavefunction, the wavefunction can take different shapes and correlations which further complicates a na\"ive sampling method. \\
+Hence, Metropolis et al. developed an algorithm that accepts or rejects a configuration starting from an initial configuration using only probability ratios \cite{metropolis_rosenbluth_rosenbluth_teller_teller_53}. This algorithm ensures that the final list of accepted configurations follows the same distribution as the probability density distribution \cite{metropolis_rosenbluth_rosenbluth_teller_teller_53}. \\
+Analogous to the paper in which Metropolis et al. demonstrated how they sampled according to the Boltzmann distribution, the following steps is taken to sample the selected trial wavefunction \cite{metropolis_rosenbluth_rosenbluth_teller_teller_53}:
+\begin{quote}
+    1. Place the $N$ particles in any configuration, and denote it as $\mathbf{R}_1$. Calculate $\abs{\Psi_T(\mathbf{R}_1)}^2$. \\
+    2. Since the initial configuration is a vector that contains the Cartesian positions of $N$ particles, it is possible to select one particle, say particle $i$, who has the initial position of $(x_i, y_i, z_i)$, and displace particle within a small cube, say with an edge length of $\varepsilon$. Mathematically, this displacement is denoted as:
+    $$x_i \mapsto x_i + \varepsilon \delta_x, y_i \mapsto y_i + \varepsilon \delta_y, z_i \mapsto z_i + \varepsilon \delta_z$$
+    where $\delta_x, \delta_y, \delta_z \in [-1, 1]$. Denote the new configuration as $\mathbf{R}_2$. Calculate $\abs{\Psi_T(\mathbf{R}_2)}^2$. \\
+    3. Calculate the ratio between the amplitude probabilities of the two configurations:
+    $$p := \frac{\abs{\Psi_T(\mathbf{R}_2)}^2}{\abs{\Psi_T(\mathbf{R}_1)}^2}$$
+    4. If $p \ge 1$, confirm moving the particle to the new position. If $p < 1$, move the particle to the new position with probability $p$. Mathematically, move the particle to the new position with probability
+    $$P = \min(1, p)$$
+    5. If the new configuration is accepted, repeat step 2 to 4 which generates another configuration and determine whether to accept or reject it based on the latest accepted configuration. If the new configuration is rejected, start from the latest accepted configuration, and repeat step 2 to 4. \\
+    6. This above process returns a list of $M$ configurations $\mathbf{R}_1, \mathbf{R}_2, \dots, \mathbf{R}_M$.
+\end{quote}
+This algorithm developed by Metropolis et al. prevents one from needing to sample configurations that grows exponentially large as the dimension scales, and efficiently generates a set of configurations who satisfy the probability distribution from the trial wavefunction. \\
+From the list of $M$ configurations, it is then possible to calculate the local energy for each configuration following \cref{eq:local}, and compute the variational approximation of the ground-state energy using \cref{eq:approx_energy}.

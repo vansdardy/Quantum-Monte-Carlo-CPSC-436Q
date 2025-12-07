@@ -73,7 +73,7 @@ From \cref{eq:local} and \cref{eq:pdf}, \cref{eq:trial_energy} becomes:
     E_V = \int f(\mathbf{R}) E_{\text{loc}}(\mathbf{R}) \dd \mathbf{R}
 \end{equation}
 which can be approximated by \cite{foulkes_mitas_needs_rajagopal_01}\cite{acioli_97}:
-\begin{equation}
+\begin{equation}\label{eq:approx_energy}
     E_V \approx \frac{1}{M} \Sum{m = 1}{M} E_{\text{loc}}(\mathbf{R}_m)
 \end{equation}
 The essential steps of VMC have been established, showing how the ground-state energy can be estimated through Monte Carlo sampling. However, in this process, two key challenges remain: the choice and optimization of the trial wavefunction and the sampling of the configuration $\mathbf{R}$. These two aspects will be discussed in the following sections.
