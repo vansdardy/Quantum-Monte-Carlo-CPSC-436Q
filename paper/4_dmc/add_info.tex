@@ -1,0 +1,20 @@
+\subsection{Importance Sampling}
+The process described above is generally extremely inefficient for a large number of particles due to possible complicated inter-particle interactions \cite{troyer_11}, which can lead to \cref{eq:rate_term} fluctuate wildly \cite{foulkes_mitas_needs_rajagopal_01}. The technique of \textit{importance sampling} is introduced to overcome these difficulties. Without extending into the mathematical details embedded in this technique, the key idea of the technique can be described as the following:
+\begin{quote}
+    1. Design a \textit{trial wavefunction}, $\Phi(\mathbf{R})$, that approximately describes the exact ground state $\Phi_0$ \cite{troyer_11}. \\
+    2. Introduce a new function $f(\mathbf{R}, \tau)$ such that \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01}
+    \begin{equation}
+        f(\mathbf{R}, \tau) := \Phi(\mathbf{R})\Psi_T(\mathbf{R}, \tau)
+    \end{equation}
+    where $f(\mathbf{R}, \tau)$ is interpreted as the probability density distribution of the population of ``walkers'' instead of $\Psi_T(\mathbf{R}, \tau)$. \\
+    3. Follow a similar diffusion process as described in the main process, except that, before deciding to ``branch'' or not, one need to introduce a \textit{drift}, or \textit{pseudo force}, $\mathbf{F}$, to the new configuration $\mathbf{R}$ relative to $\mathbf{R}'$, where \cite{troyer_11}
+    \begin{equation}
+        \mathbf{R} = \mathbf{R}' + \frac{\delta \tau}{2} \mathbf{F}(\mathbf{R}')
+    \end{equation}
+    and
+    \begin{equation}
+        \mathbf{F} = \frac{2 \nabla\Phi(\mathbf{R})}{\Phi(\mathbf{R})}
+    \end{equation}
+\end{quote}
+The introduction of the ``drift'' guides the walkers in regions with high probability, hence, reducing fluctuations in \cref{eq:rate_term} and local energies \cite{troyer_11}. \\
+Another difficulty that DMC runs into is that it requires the wavefunction to be positive definite \cite{foulkes_mitas_needs_rajagopal_01}. This means DMC can simulate Bosonic systems at zero temperature, but for fermionic systems like electronic systems that have positive and negative values due to antisymmetry, DMC runs into the \textit{fermion sign problem}, which will be discussed in \cref{dmc_sign}.

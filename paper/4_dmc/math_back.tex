@@ -1,0 +1,33 @@
+\subsection{Mathematical Background}
+Additional to \cref{time-dep-defn}, DMC is based on the solution to a ``modified'' version of the time-dependent Schr\"odinger's equation, where it is written in imaginary time \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01} \cite{kalos_whitlock_08}:
+\begin{definition}
+    A time-dependent Schr\"odinger's equation written in imaginary time is
+    $$-\pdv{\tau} \Psi(\mathbf{R}, \tau) = (\hamiltonian - E_T)\Psi(\mathbf{R}, \tau)$$
+    where $\tau = \frac{\imag t}{\hbar}$, and $E_T$ is an energy offset.
+\end{definition}
+Additionally, in \cite{troyer_11}, it is shown that as $\tau \to \infty$, the solution wavefunction to the above equation will have the ground state dominating other states. Furthermore, the introduction of the energy offset allows the wavefunction to be normalized \cite{troyer_11}. \\
+For the wavefunction to ``diffuse'' in time, Green's function is needed to describe the process, where \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01} \cite{kalos_whitlock_08}:
+\begin{definition}
+    A Green's function that describes the diffusion process for the wavefunction described above, $\Psi(\mathbf{R}, \tau)$, is given to be:
+    \begin{equation}\label{eq:green_fn}
+        G(\mathbf{R}, \mathbf{R}', \delta\tau) = \mel{\mathbf{R}}{\exp(-\delta\tau(\hamiltonian - E_T))}{\mathbf{R}'}
+    \end{equation}
+    where $\delta \tau$ is the change in time.
+\end{definition}
+This permits us to write the general wavefunction to be the result of a diffusion process \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01} \cite{kalos_whitlock_08}:
+$$\Psi(\mathbf{R}, \tau) = \int G(\mathbf{R}, \mathbf{R}', \tau)\Psi(\mathbf{R}', 0)\dd \mathbf{R}'$$
+where the Green's function acts like the probability density that the starting configuration $\mathbf{R}'$ evolves to $\mathbf{R}$ after time $\tau$. \\
+As $\delta \tau \to 0$, while assuming that $\hamiltonian = \hat{T} + \hat{V}$, where $\hat{T}$ is the kinetic-energy operator and $\hat{V}$ is the potential-energy operator, by applying the Trotter-Suzuki formula and approximation for small $\delta \tau$, \cref{eq:green_fn} can be rewritten as \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01}:
+\begin{equation}\label{eq:green_approx}
+    G(\mathbf{R}, \mathbf{R}', \delta \tau) = (2 \pi \delta\tau)^{-\frac{3N}{2}} \exp(-\frac{(\mathbf{R} - \mathbf{R}')^2}{2\delta\tau})\exp(-\delta\tau\frac{V(\mathbf{R}) + V(\mathbf{R}') - 2E_T}{2})
+\end{equation}
+where the rate term \cite{kalos_whitlock_08}
+\begin{equation}\label{eq:rate_term}
+    p := \exp(-\delta\tau\frac{V(\mathbf{R}) + V(\mathbf{R}') - 2E_T}{2})
+\end{equation}
+determines the number of ``walkers'' that survive to the next step \cite{foulkes_mitas_needs_rajagopal_01}. For each original ``walker'', the number of descendants that ``branches'' out is:
+\begin{equation}\label{eq:walker_clone}
+    n_d := \text{int}(p + \eta)
+\end{equation}
+where $\text{int}$ takes the integer part of the value, and $\eta$ is a random number drawn uniformly at random on the interval $[0,1]$ \cite{troyer_11} \cite{foulkes_mitas_needs_rajagopal_01}. \\
+Additionally, the rest of \cref{eq:green_approx} excluding \cref{eq:rate_term} is a time propagator, $G_d$, which generates a random walk, and is a Gaussian distribution \cite{troyer_11}\cite{kalos_whitlock_08}.

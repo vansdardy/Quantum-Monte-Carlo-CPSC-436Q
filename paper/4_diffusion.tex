@@ -1,0 +1,5 @@
+Similar to VMC, the Diffusion Monte Carlo (abbreviated as DMC) method provides an alternative way of approximating the ground-state properties of a many-body system. \\
+There exists a key difference between VMC and DMC. VMC method selects a trial wavefunction with respect to certain parameters and updates these parameters from results of an iteration to optimize the wavefunction, which leads to the convergence to ground-state properties. DMC method, however, starts with a trial wavefunction, instead of optimizing this wavefunction through updating parameters, it samples certain ``walkers'', which will be explained in detail later, and allows them to diffuse over time with respect to an appropriate function, such that they converge to the ground state.
+\input{4_dmc/math_back.tex}
+\input{4_dmc/main_process.tex}
+\input{4_dmc/add_info.tex}

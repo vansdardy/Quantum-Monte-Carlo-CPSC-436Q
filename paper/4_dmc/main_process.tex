@@ -1,0 +1,6 @@
+\subsection{Main Process}
+With the mathematical setup, it is possible to describe DMC in the following steps \cite{kalos_whitlock_08}: \\
+Step 1: Sample the first generation of points $\mathbf{R}'$ according to a trial wavefunction $\Psi_T(\mathbf{R}')$. \\
+Step 2: For each point in $\mathbf{R}'$, obtain a new set of points, which form a new configuration $\mathbf{R}$, by sampling according to the Gaussian distribution described by $G_d$, which gives us $\mathbf{R} - \mathbf{R}'$. This is where the idea of Monte Carlo is embedded. \\
+Step 3: For each point in $\mathbf{R}$ and its corresponding point in $\mathbf{R}'$, generate $n_d$ according to \cref{eq:walker_clone}. If $n_d = 0$, remove the point from future random walks. If $n_d > 1$, replace the point with $n_d$ clones. \\
+Step 4: Adjust $E_T$ accordingly to control the size of ``walkers''. After a sufficient enough time of repeating Step 2 and Step 3, for each point in the final configuration $\mathbf{R}_f$, find the ground-state energy by \cref{eq:approx_energy}.
