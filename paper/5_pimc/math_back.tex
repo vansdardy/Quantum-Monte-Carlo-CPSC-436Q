@@ -1,0 +1,37 @@
+\subsection{Mathematical Background}
+All QMC methods start by investigating which Hamiltonian is of interest, in most cases, similar to what was mentioned in DMC, a general Hamiltonian that describes a many-body system takes the form of:
+$$\hamiltonian = \hat{T} + \hat{V}$$
+where $\hat{T}$ represents the kinetic term, and $\hat{V}$ represents the potential term, which may arise from different sources (one of such sources is the interaction between particles). \\
+The key element that PIMC utilizes is the density matrix for the canonical ensemble which can be described as the following \cite{troyer_11} \cite{barker_79} \cite{kalos_whitlock_08}:
+\begin{definition}
+    The thermal density matrix $\exp(-\beta\hamiltonian)$ from which one can obtain thermal equilibrium takes the form where
+    \begin{equation}\label{eq:thermal_density}
+        \rho(\mathbf{R}, \mathbf{R}', \beta) = \mel{\mathbf{R}}{\exp(-\beta \hamiltonian)}{\mathbf{R}'}
+    \end{equation}
+    denotes the matrix elements, and $\beta$ is the inverse of the product of the Boltzmann constant and the temperature: $\beta = \frac{1}{k_B T}$
+\end{definition}
+\begin{definition}\label{partition}
+    The partition function, a function of the thermodynamic state variables, in concern is described to be \cite{barker_79}
+    \begin{equation}
+        Z = \frac{1}{N!} \int_{\mathbf{R}} \rho(\mathbf{R}, \mathbf{R}, \beta) \dd \mathbf{R}
+    \end{equation}
+\end{definition}
+By leveraging \cref{eq:thermal_density} and the product property of the thermal density matrix, the following stands \cite{troyer_11} \cite{barker_79} \cite{kalos_whitlock_08}
+\begin{equation}\label{eq:transition}
+    \rho(\mathbf{R}_1, \mathbf{R}_3, \beta_1 + \beta_2) = \int \rho(\mathbf{R}_1, \mathbf{R}_2, \beta_1)\rho(\mathbf{R}_2, \mathbf{R}_3, \beta_2) \dd \mathbf{R}_2
+\end{equation}
+By taking $M$ small time steps where $\tau = \frac{\beta}{M}$ as $M \to \infty$, it is possible to extend \cref{eq:transition} that \cite{troyer_11} \cite{barker_79}:
+\begin{equation}\label{eq:path_integral}
+    \rho(\mathbf{R}_1, \mathbf{R}_{M + 1}, \beta) = \int \int \cdots \int \rho(\mathbf{R}_1, \mathbf{R}_{2}, \tau) \rho(\mathbf{R}_2, \mathbf{R}_{3}, \tau) \times \cdots \times \rho(\mathbf{R}_{M}, \mathbf{R}_{M+1}, \tau) \dd \mathbf{R}_2 \mathbf{R}_3 \cdots \dd \mathbf{R}_M
+\end{equation}
+When $M$ is sufficiently large, or temperature $T$ is sufficiently high, it follows that $\tau$ must be small, which allows replacing unknown $\rho(\mathbf{R}_j, \mathbf{R}_{j+1}, \tau)$ with known functions through approximation \cite{troyer_11}. One such approximation echoes \cref{eq:green_approx} in DMC \cite{barker_79}, 
+\begin{equation}\label{eq:transition_approx}
+    \rho(\mathbf{R}, \mathbf{R}', \tau) \approx (2\pi\tau)^{-\frac{\nu N}{2}}\exp(-\frac{(\mathbf{R} - \mathbf{R}')^2}{2\tau} - \tau (\frac{V(\mathbf{R}) + V(\mathbf{R}')}{2}))
+\end{equation}
+in atomic units, where $\nu$ is the dimensionality of space (can take $\nu = 3$ for 3D space), and
+$$(\mathbf{R} - \mathbf{R}')^2 = \Sumi{i}(\mathbf{r}_i - \mathbf{r}_i')^2$$
+The Green's function in this case specifically refers to the part:
+\begin{equation}
+    G(\mathbf{R}, \mathbf{R}', \tau) = \exp(-\frac{(\mathbf{R} - \mathbf{R}')^2}{2\tau} - \tau (\frac{V(\mathbf{R}) + V(\mathbf{R}')}{2}))
+\end{equation}
+from \cref{eq:transition_approx}.

@@ -1,0 +1,9 @@
+\subsection{Main Process}
+With the mathematical setup, the main process follows several steps as described below: \\
+Step 1: Write the partition function in \cref{partition} in terms of a path integral like \cref{eq:path_integral}. \\
+Step 2: For each particle of all $N$ particles, represent it in a ``world line'' such that $(\mathbf{r}_1^{i}, \mathbf{r}_2^i, \dots, \mathbf{r}_M^i)$ describes the path of particle $i$ over $M$ steps. On aggregate, this should give us a path of configurations as well $(\mathbf{R}_1, \mathbf{R}_2, \dots, \mathbf{R}_M)$. \\
+Step 3: To obtain one path of configurations, each move is accepted or rejected based on the Metropolis algorithm similar to that of in \cref{metropolis} \cite{troyer_11}, and the displacement of configurations is being sampled from a Gaussian distribution similar to that in \cref{dmc_math}, which, in this case, is according to \cref{eq:transition_approx}. \\
+Step 4: Obtain say $n$ paths. From these $n$ sample paths, it is possible to estimate a thermodynamic observable following a similar logic as estimating the ground-state energy:
+$$\expval{\mathcal{O}} = \frac{1}{n}\Sum{i = 1}{n} \mathcal{O}(\{\mathbf{R}_i\})$$
+where $\mathcal{O}(\{\mathbf{R}_i\})$ represents calculating the observable on the $i$th path sampled. The details of how to obtain the properties for a single path is not discussed here, as the mathematical details, once again, overshadow the key ideas of PIMC. \\
+It is important, however, to highlight that PIMC suffers from the fermion sign problem as well, if not worse, compared to the DMC method. This is because DMC only evolves ``walkers'' (single points in a distribution), while PIMC evolves entire set of particles from one configuration to another.

@@ -1,1 +1,6 @@
-\subsection{PIMC - \dots}
+\subsection{PIMC - Restricted PIMC}
+The idea of ``circumventing'' the sign problem in PIMC is similar to that in DMC. The key difference between the two methods lies within from where do we restrict the nodes. In DMC, as described above, the nodal surface is found in a spatial situation; whereas in PIMC, the restricting condition can be described in terms of \cref{eq:transition}, where we need to enforce
+\begin{equation}
+    \forall \tau \in [0, \beta], \rho(\mathbf{R}(\tau), \mathbf{R}(0), \tau) > 0
+\end{equation}
+This prevents any sampled path from ever entering the negative sign area, which leads to cancellation interference.

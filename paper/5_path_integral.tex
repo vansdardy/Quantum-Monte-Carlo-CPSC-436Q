@@ -1,1 +1,3 @@
-Though the name may be deceptive, Path Integral Monte Carlo (abbreviated as PIMC) shares the same kernel as DMC.
+Though the name may be deceptive, Path Integral Monte Carlo (abbreviated as PIMC) shares the same kernel as DMC and borrows the idea of a ``path'' from VMC. The key difference between PIMC and the other two QMC methods is that PIMC places its focus on reaching the thermodynamic equilibrium of a physical system, while VMC and DMC focuses on approximating the ground-state energies, with DMC having additional restrictions on the systems it can be used. PIMC explores the properties of physical systems with finite temperatures, which renders it to be more useful than DMC considering that DMC works best for zero-temperature Bosonic systems.
+\input{5_pimc/math_back.tex}
+\input{5_pimc/main_process.tex}
