@@ -4,8 +4,128 @@
 The link to the Jupyter Notebook that demonstrates this process can be accessed \href{https://github.com/vansdardy/Quantum-Monte-Carlo-CPSC-436Q/blob/fa0962f7f55efa86513254f068241f26fbd05df1/code/monte-carlo-demo/pi.ipynb}{\textcolor{blue}{here}} on GitHub.
 
 \section{Variational Monte Carlo}
+
 \subsection{Using VMC to Find the Ground-state Energy of the Two-electron System in a Fixed-Nucleus Helium Atom}\label{app:vmc_code}
 The link to the Jupyter Notebook that demonstrates this process can be accessed (\dots) on GitHub.
+
+\subsubsection*{Slater Determinant}
+
+For the ground state of helium both electrons occupy the same spatial $1s$
+orbital with opposite spins.  The spatial part of the Slater determinant
+therefore reduces to a product:
+\[
+\Phi(R) = \phi_{1s}(r_1)\,\phi_{1s}(r_2),
+\qquad
+\phi_{1s}(r) \propto e^{-Zr}.
+\]
+Since normalization constants cancel in Metropolis ratios and in the local
+energy, the implementation uses
+\[
+\ln \Phi(R) = -Z(|r_1| + |r_2|).
+\]
+\\
+This form satisfies the exact electron--nucleus cusp condition and gives an
+analytically simple expression for gradients and Laplacians, which reduces the
+variance of the local energy estimator.
+
+\subsubsection*{Jastrow Factor}
+
+To incorporate electron--electron correlation we adopt a simple two-body
+Jastrow factor of the form
+\[
+J(R;\beta) = \exp\!\big[u(r_{12};\beta)\big], \qquad
+u(r_{12};\beta) = 
+\frac{a_{\mathrm{cusp}}\, r_{12}}{1 + \beta r_{12}},
+\]
+where  
+- $r_{12} = |r_1 - r_2|$,  
+- $a_{\mathrm{cusp}} = \tfrac{1}{2}$ is fixed by the electron--electron cusp
+  condition for opposite-spin electrons,  
+- $\beta$ is a variational parameter controlling the range of the correlation hole. \\
+
+The code therefore uses
+\[
+\ln J(R;\beta) = u(r_{12};\beta),
+\qquad
+\ln \Psi_T = \ln \Phi + \ln J.
+\]
+
+This Jastrow is real-valued and preserves the antisymmetry provided by the Slater determinant.
+
+\subsubsection*{Analytic Local Energy Evaluation}
+
+The local energy is computed using the standard expression
+\[
+E_{\mathrm{loc}}(R;\beta)
+= -\frac{1}{2}
+\sum_{i=1}^2
+\left[
+\nabla_i^2 \ln \Psi_T +
+\bigl|\nabla_i \ln \Psi_T\bigr|^2
+\right]
+- Z 
+\left(\frac{1}{|r_1|} + \frac{1}{|r_2|}\right)
++\frac{1}{|r_1 - r_2|}.
+\]
+
+To reduce variance, the derivatives of $\ln \Psi_T$ are computed analytically.
+For the Slater part,
+\[
+\nabla_1 \ln \Phi = -Z\,\hat r_1, \qquad
+\nabla_2 \ln \Phi = -Z\,\hat r_2,
+\]
+\[
+\nabla_1^2 \ln \Phi = -\frac{2Z}{|r_1|}, \qquad
+\nabla_2^2 \ln \Phi = -\frac{2Z}{|r_2|}.
+\]
+
+For the Jastrow term ($r = r_{12}$):
+\[
+u'(r)  = \frac{a_{\mathrm{cusp}}}{(1+\beta r)^2}, \qquad
+u''(r) = -\frac{2a_{\mathrm{cusp}}\beta}{(1+\beta r)^3},
+\]
+\[
+\nabla_1 u = u'(r_{12}) \hat s, \qquad
+\nabla_2 u = -u'(r_{12}) \hat s,
+\]
+\[
+\nabla_1^2 u = \nabla_2^2 u
+= u''(r_{12}) + \frac{2}{r_{12}}u'(r_{12}),
+\]
+where $s = r_1 - r_2$ and $\hat s = s/|s|$.
+\\
+The kinetic energy is formed from these analytic derivatives, while the
+potential energy uses the standard electron--nucleus and electron--electron
+Coulomb interactions.
+
+\subsubsection*{Metropolis Sampling of $|\Psi_T|^2$}
+
+The probability density $|\Psi_T(R;\beta)|^2$ is sampled using the Metropolis
+algorithm:\\1. start from a random initial configuration drawn from a Gaussian distribution;  
+2. propose $R' = R + \delta R$ with $\delta R$ drawn from a normal distribution
+   with width \texttt{step\_size};  
+3. accept the move with probability  
+\[
+A = \min\!\left[
+1,\;
+\frac{|\Psi_T(R';\beta)|^2}{|\Psi_T(R;\beta)|^2}
+\right];
+\]
+4. after a thermalization period the local energy is recorded at each accepted configuration.\\
+The function \texttt{metropolis\_vmc} implements this procedure and returns the
+mean local energy, its variance, and the full set of sampled values.
+
+\subsubsection*{Variance-Based Optimization of the Jastrow Parameter}
+
+We optimize the Jastrow parameter $\beta$ by minimizing the variance of the local energy. Since helium has only one variational parameter, a simple scan over a discrete grid,
+\[
+\beta \in \{\beta_1,\beta_2,\ldots,\beta_M\},
+\]
+is sufficient.  
+The function \texttt{optimize\_beta} evaluates the VMC variance at each value
+and returns the $\beta$ which minimizes $\mathrm{Var}(E_{\mathrm{loc}})$.
+
+
 \subsection{Rule to Update the Parameter in VMC}\label{app:param_update}
 
 \newpage
