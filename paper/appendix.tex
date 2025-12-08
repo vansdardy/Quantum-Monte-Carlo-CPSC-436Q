@@ -6,13 +6,14 @@ The link to the Jupyter Notebook that demonstrates this process can be accessed 
 \section{Variational Monte Carlo}
 
 \subsection{Using VMC to Find the Ground-state Energy of the Two-electron System in a Fixed-Nucleus Helium Atom}\label{app:vmc_code}
-The link to the Jupyter Notebook that demonstrates this process can be accessed (\dots) on GitHub.
+
+The accompanying Jupyter Notebook (\dots) contains a full implementation of a Variational Monte Carlo (VMC) simulation for the ground-state electronic energy of the helium atom in the Born--Oppenheimer approximation. We treat the nucleus as fixed at the origin and consider only the two interacting electrons. All calculations are performed in atomic units.
 
 \subsection{Variance-Based Optimization of the Jastrow Parameter}\label{app:param_update}
 We optimize the Jastrow parameter $\beta$ by minimizing the variance of the local energy. Since helium has only one variational parameter, a simple scan over a discrete grid,
 \[
-\beta \in \{\beta_1,\beta_2,\ldots,\beta_M\},
+\beta \in \{\beta_1, \beta_2, \ldots, \beta_M\}
 \]
-is sufficient. The optimization works by computing the local energies for each $\beta$, and pick the one with the minimum variance. The function \texttt{optimize\_beta} evaluates the VMC variance at each value and returns the $\beta$ which minimizes $\mathrm{Var}(E_{\mathrm{loc}})$.
+For each $\beta$ in this grid, the function \texttt{optimize\_beta} runs a short VMC simulation, computes the corresponding variance of $E_{\mathrm{loc}}$, and identifies the value of $\beta$ that yields the smallest variance. This optimized parameter is then used in a longer VMC run to produce the final energy estimate.
 
 \newpage
